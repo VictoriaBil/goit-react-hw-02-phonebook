@@ -2,6 +2,7 @@ import { Component } from 'react';
 import { Form } from './Form/Form';
 import { ContactList } from './ContactList/ContactList';
 import Filter from './Filter/Filter';
+import Notification from './Notification/Notification';
 import { nanoid } from 'nanoid';
 import css from './App.module.css';
 
@@ -17,9 +18,6 @@ export class App extends Component {
     contacts: INITIAL_VALUE,
     filter: '',
   };
-
-  nameId = nanoid();
-  numberId = nanoid();
 
   changeFilter = e => {
     this.setState({ filter: e.currentTarget.value });
@@ -51,20 +49,26 @@ export class App extends Component {
     });
   };
 
-  render() {
-    const normilizedFilter = this.state.filter.toLowerCase();
-
-    const visibleContacts = this.state.contacts.filter(contact =>
-      contact.name.toLowerCase().includes(normilizedFilter)
+  filteredContacts = () => {
+    const normalisedFilter = this.state.filter.toLowerCase();
+    return this.state.contacts.filter(contact =>
+      contact.name.toLowerCase().includes(normalisedFilter)
     );
+  };
+
+  render() {
     return (
       <div className={css.container}>
         <h1 className={css.title}>Phonebook</h1>
         <Form onSubmit={this.addContact} />
         <h2 className={css.title}>Contacts</h2>
-        <Filter value={this.filter} onChange={this.changeFilter} />
+        {this.state.contacts.length === 0 ? (
+          <Notification message="There are no contacts in your phonebook yet" />
+        ) : (
+          <Filter value={this.filter} onChange={this.changeFilter} />
+        )}
         <ContactList
-          contactData={visibleContacts}
+          contactData={this.filteredContacts()}
           deleteContact={this.deleteContact}
         />
       </div>

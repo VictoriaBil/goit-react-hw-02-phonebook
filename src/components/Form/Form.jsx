@@ -26,7 +26,7 @@ export class Form extends Component {
   render() {
     return (
       <form className={css.form} onSubmit={this.handleSubmit}>
-        <label htmlFor={this.nameId}>
+        <label>
           <input
             className={css.item}
             type="text"
@@ -38,7 +38,7 @@ export class Form extends Component {
             required
           />
         </label>
-        <label htmlFor={this.numberId}>
+        <label>
           <input
             className={css.item}
             type="tel"
